@@ -1,0 +1,24 @@
+{% extends 'layout.html'%}
+
+{% block content %}
+<h2 class="mt-3">Mobile Phones</h2>
+<div class="container py-5">
+    <div class="row row-cols-2 row-cols-md-3 g-4">
+        {% for product in products|slice:":3" %}
+        <div class="col">
+            <div class="card h-100">
+                <img src="{{product.image.url}}" class="card-img-top w-50 mx-auto pt-3" alt="Product 1">
+                <div class="card-body text-center">
+                    <h5 class="card-title">{{product.name}}</h5>
+                    <p class="card-text"><strong>₹{{product.price}}</strong></p>
+                    <a href="#" class="btn btn-primary mt-auto">Add to Cart</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="text-center mt-4">
+        <a href="#" class="btn btn-outline-primary">View All Products</a>
+    </div>
+</div>
+{% endblock %}
