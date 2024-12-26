@@ -24,3 +24,9 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     return redirect('index')
+
+def ContactPage(request):
+    return render(request,'contact.html')
+
+def AboutPage(request):
+    return render(request,'about.html')
