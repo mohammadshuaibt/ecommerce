@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, SetPasswordForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
@@ -75,5 +75,23 @@ class UpdateUserForm(UserChangeForm):
     class Meta:
         model = User
         fields = ('username', 'email', 'first_name', 'last_name')
+
+class UpdatePasswordForm(SetPasswordForm):
+    new_password1 = forms.CharField(
+        max_length=50,
+        required=True,
+        widget=forms.PasswordInput,
+        label= "New Password"
+    )
+    new_password2 = forms.CharField(
+        max_length=50,
+        required=True,
+        widget=forms.PasswordInput,
+        label="Confirm Password"
+    )
+
+    class Meta:
+        model= User
+        fields = ('new_password1', 'new_password2')
 
     

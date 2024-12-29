@@ -11,4 +11,5 @@ urlpatterns = [
     path('category/<str:namee>',views.category,name = 'category'),
     path('profile/',views.profile_page,name='profile'),
     path('editprofile/',views.edit_profile,name='edit_profile'),
+    path('updatepassword/',views.update_password,name='update_password'),
 ]

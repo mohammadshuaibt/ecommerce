@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from .forms import SignUpForm, UpdateUserForm
+from .forms import SignUpForm, UpdateUserForm, UpdatePasswordForm
 # Create your views here.
 def index(request):
     products = Product.objects.all()
@@ -85,4 +85,23 @@ def edit_profile(request):
         return redirect('profile')
     
     return render(request,'updateprofile.html',{'user_form': user_form})
+
+@login_required
+def update_password(request):
+    user = request.user
+    if request.method == 'POST':
+        form = UpdatePasswordForm(user,request.POST)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Password Updated Successfully")
+            return redirect('profile')
         
+        else:
+            print(form.errors)
+            for error in list(form.errors.values()):
+                messages.error(request,error)
+            return redirect('update_password')
+    else:
+        form = UpdatePasswordForm(user)
+    return render(request,'updatepassword.html',{'form':form})       
