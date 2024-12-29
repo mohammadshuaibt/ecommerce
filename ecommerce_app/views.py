@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect   
 from . models import Product
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from .forms import SignUpForm
 # Create your views here.
 def index(request):
     products = Product.objects.all()
@@ -15,8 +17,10 @@ def login_user(request):
         user = authenticate(request,username = username, password = password)
         if user is not None:
             login(request, user)
+            messages.success(request, ("You have been logged in"))
             return redirect('index')
         else:
+            messages.success(request, ("There was an error, please try again"))
             return redirect('login')
         
     return render(request,'login.html')
@@ -30,3 +34,20 @@ def ContactPage(request):
 
 def AboutPage(request):
     return render(request,'about.html')
+
+def register_page(request):
+    form = SignUpForm()
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password1']
+            user = authenticate(username=username, password = password)
+            login(request,user)
+            messages.success(request, ("You have registered successfully"))
+            return redirect('index')
+        else:
+            messages.success(request, ("Whoops!, There was a problem registering, Please try again"))
+            return redirect('register')
+    return render(request,'register.html',{'form': form})
