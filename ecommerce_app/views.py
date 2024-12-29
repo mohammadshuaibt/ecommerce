@@ -1,12 +1,14 @@
 from django.shortcuts import render, redirect   
-from . models import Product
+from . models import Product, Category
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .forms import SignUpForm
 # Create your views here.
 def index(request):
     products = Product.objects.all()
+    categories = Category.objects.all()
     return render(request, 'index.html',{'products':products})
+
 
 def login_user(request):
     if request.user.is_authenticated:
