@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from .forms import SignUpForm
+from .forms import SignUpForm, UpdateUserForm
 # Create your views here.
 def index(request):
     products = Product.objects.all()
@@ -71,4 +71,18 @@ def category(request, namee):
 def profile_page(request):
     user = request.user
     return render(request, 'profile.html',{'user':user})
+
+@login_required
+def edit_profile(request):
+    user = request.user
+    user_form = UpdateUserForm(request.POST or None, instance=user)
+
+    if user_form.is_valid():
+        user_form.save()
+
+        login(request,user)
+        messages.success(request, "User Updated Successfully")
+        return redirect('profile')
+    
+    return render(request,'updateprofile.html',{'user_form': user_form})
         

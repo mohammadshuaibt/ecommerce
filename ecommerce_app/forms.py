@@ -54,22 +54,26 @@ class SignUpForm(UserCreationForm):
         return password2
     
 class UpdateUserForm(UserChangeForm):
+    password = None
     email = forms.EmailField(
         required=True,
-        help_text='Required. Please provide a valid email address.'
+
     )
     first_name = forms.CharField(
         max_length=100,
         required=True,
-        help_text='Required. Please enter your first name.'
     )
     last_name = forms.CharField(
         max_length=100,
         required=True,
-        help_text='Required. Please enter your last name.'
     )
     username = forms.CharField(
         max_length=50,
         required=True,
-        help_text='Required. Please choose a username.'
     )
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'first_name', 'last_name')
+
+    
