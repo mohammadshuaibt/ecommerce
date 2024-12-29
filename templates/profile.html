@@ -1,0 +1,47 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="text-center mb-4">Profile Details</h2>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div>
+                <h3 class="mb-0 text-center" style="font-family: 'Roboto', sans-serif;">{{ user.get_full_name }}</h3>
+                <p class="mb-0 text-center" style="font-family: 'Roboto', sans-serif;">@{{ user.username }}</p>
+            </div>
+            <h5 class="card-title text-primary">Account Settings</h5>
+            <div class="d-flex justify-content-start mb-4">
+                <a href="#" class="btn btn-warning me-2">Change Password</a>
+                <a href="#" class="btn btn-primary">Edit Profile</a>
+            </div>
+            <h5 class="card-title text-primary">User Information</h5>
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <strong>Name:</strong> {{ user.get_full_name }} 
+                            <i class="fas fa-user-circle float-end"></i>
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Email:</strong> {{ user.email }} 
+                            <i class="fas fa-envelope float-end"></i>
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Username:</strong> {{ user.username }} 
+                            <i class="fas fa-id-badge float-end"></i>
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Last Login:</strong> {{ user.last_login|date:"F j, Y, g:i a" }} 
+                            <i class="fas fa-clock float-end"></i>
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Date Joined:</strong> {{ user.date_joined|date:"F j, Y" }} 
+                            <i class="fas fa-calendar float-end"></i>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

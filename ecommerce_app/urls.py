@@ -9,4 +9,5 @@ urlpatterns = [
     path('register/',views.register_page,name='register'),
     path('product/<int:pk>',views.product_details,name='product_details'),
     path('category/<str:namee>',views.category,name = 'category'),
+    path('profile/',views.profile_page,name='profile')
 ]

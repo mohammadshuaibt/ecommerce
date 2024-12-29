@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from . models import Product, Category
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from .forms import SignUpForm
 # Create your views here.
 def index(request):
@@ -65,3 +67,8 @@ def category(request, namee):
     products = Product.objects.filter(category = category)
     return render(request, 'category.html',{'products':products, 'category': category})
     
+@login_required
+def profile_page(request):
+    user = request.user
+    return render(request, 'profile.html',{'user':user})
+        
