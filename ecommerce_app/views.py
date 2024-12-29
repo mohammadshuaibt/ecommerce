@@ -51,3 +51,7 @@ def register_page(request):
             messages.success(request, ("Whoops!, There was a problem registering, Please try again"))
             return redirect('register')
     return render(request,'register.html',{'form': form})
+
+def product_details(request, pk):
+    product = Product.objects.get(id=pk)
+    return render(request,'product.html',{'product': product})
