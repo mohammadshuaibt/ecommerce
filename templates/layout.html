@@ -49,6 +49,9 @@
                     {% endif %}
                     <a href="{% url 'cart_page' %}" class="nav-link me-2">
                         <i class="fas fa-shopping-cart"></i>
+                        {% if cart_item_count > 0 %}
+                            <span class="badge bg-secondary">{{cart_item_count}}</span>
+                        {% endif %}
                     </a>
                     <a href="#" class="nav-link">
                         <i class="fas fa-user"></i>

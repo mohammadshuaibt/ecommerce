@@ -21,3 +21,13 @@ def remove_from_cart(request, product_id):
     cart = Cart(request)
     cart.remove(product_id)  # Call the remove method
     return redirect('cart_page')  # Redirect back to the cart page
+
+def update_cart(request, product_id):
+    cart = Cart(request)
+    quantity = int(request.POST.get('quantity', 1))
+    cart.update(product_id,quantity)
+    return redirect('cart_page')
+
+def count(self):
+    '''Returns the total number of unique items in the Cart.'''
+    return len(self.cart)

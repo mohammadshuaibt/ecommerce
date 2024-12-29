@@ -23,6 +23,16 @@ class Cart:
             del self.cart[product_id]
             self.save()
 
+    def update(self,product_id,quantity):
+        '''Update the quantity of a product in Cart.'''
+        product_id = str(product_id)
+        if product_id in self.cart:
+            if quantity > 0:
+                self.cart[product_id]['quantity'] = quantity
+            else:
+                self.remove(product_id)
+            self.save()
+
     def save(self):
         self.session.modified = True
 
@@ -46,3 +56,7 @@ class Cart:
         for item in self.cart.values():
             total += float(item['price']) * item['quantity']
         return total
+
+    def count(self):
+        """Return the total number of unique items in the cart."""
+        return len(self.cart)  # Count the number of unique product IDs in the cart
