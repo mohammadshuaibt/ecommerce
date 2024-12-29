@@ -6,8 +6,10 @@ from .forms import SignUpForm
 # Create your views here.
 def index(request):
     products = Product.objects.all()
-    categories = Category.objects.all()
+    
     return render(request, 'index.html',{'products':products})
+
+
 
 
 def login_user(request):
@@ -57,3 +59,9 @@ def register_page(request):
 def product_details(request, pk):
     product = Product.objects.get(id=pk)
     return render(request,'product.html',{'product': product})
+
+def category(request, namee):
+    category = Category.objects.get(name=namee)
+    products = Product.objects.filter(category = category)
+    return render(request, 'category.html',{'products':products, 'category': category})
+    
