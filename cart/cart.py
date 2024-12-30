@@ -1,12 +1,25 @@
 from django.conf import settings
+from ecommerce_app.models import Customer
+import json
 
 class Cart:
     def __init__(self, request):
         self.session = request.session
+        self.request = request
         cart = self.session.get('cart')
         if not cart:
             cart = self.session['cart'] = {}
         self.cart = cart
+
+    # def db_add(self,product, quantity):
+    #     product_id = str(product)
+    #     product_qty = str(quantity)
+    #     if product_id in self.cart:
+    #         self.cart[product_id]['quantity'] += product_qty
+    #     else:
+    #         self.cart[product_id] = {'quantity': product_qty, 'price': str(product.price), 'name': product.name, 'image': product.image.url}
+    #     self.save()
+    #     self.update_cart_items()
 
     def add(self, product, quantity=1):
         product_id = str(product.id)
@@ -15,6 +28,9 @@ class Cart:
         else:
             self.cart[product_id] = {'quantity': quantity, 'price': str(product.price), 'name': product.name, 'image': product.image.url}
         self.save()
+        self.update_cart_items()
+        # else: 
+        #     print("no customer found")
 
     def remove(self, product_id):
         """Remove a product from the cart."""
@@ -22,6 +38,7 @@ class Cart:
         if product_id in self.cart:
             del self.cart[product_id]
             self.save()
+            self.update_cart_items()
 
     def update(self,product_id,quantity):
         '''Update the quantity of a product in Cart.'''
@@ -32,6 +49,14 @@ class Cart:
             else:
                 self.remove(product_id)
             self.save()
+            self.update_cart_items()
+
+    def update_cart_items(self):
+        """Update the cart items in the database for the authenticated user."""
+        if self.request.user.is_authenticated:
+            current_user = Customer.objects.filter(user__id=self.request.user.id)
+            cartt = {str(product_id): item['quantity'] for product_id, item in self.cart.items()}
+            current_user.update(cart_items=json.dumps(cartt))
 
     def save(self):
         self.session.modified = True
@@ -60,3 +85,9 @@ class Cart:
     def count(self):
         """Return the total number of unique items in the cart."""
         return len(self.cart)  # Count the number of unique product IDs in the cart
+    
+     
+
+
+
+    

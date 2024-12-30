@@ -4,14 +4,13 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from cart.cart import Cart
+import json
 from .forms import SignUpForm, UpdateUserForm, UpdatePasswordForm, UpdateCustomerForm
 # Create your views here.
 def index(request):
     products = Product.objects.all()
-    
     return render(request, 'index.html',{'products':products})
-
-
 
 
 def login_user(request):
@@ -25,7 +24,16 @@ def login_user(request):
             login(request, user)
             # Check if the user has a corresponding Customer instance
             try:
-                customer = user.customer  # This will raise an error if it doesn't exist
+                customer = user.customer # This will raise an error if it doesn't exist
+                saved_cart = customer.cart_items
+                if saved_cart:
+                    convert_cart = json.loads(saved_cart)
+                    cart = Cart(request)
+                    for key,value in convert_cart.items():
+                        product = get_object_or_404(Product, id=key)
+                        cart.add(product=product,quantity=value)
+
+
             except Customer.DoesNotExist:
                 # Handle the case where the customer does not exist
                 messages.error(request, "Your account does not have a customer profile. Please contact support.")
@@ -38,9 +46,11 @@ def login_user(request):
         
     return render(request, 'login.html')
 
+@login_required
 def logout_user(request):
     logout(request)
     return redirect('index')
+
 
 def ContactPage(request):
     return render(request,'contact.html')
