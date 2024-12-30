@@ -1,10 +1,10 @@
-from django.shortcuts import render, redirect   
-from . models import Product, Category
+from django.shortcuts import render, redirect,get_object_or_404
+from . models import Product, Category,Customer
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from .forms import SignUpForm, UpdateUserForm, UpdatePasswordForm
+from .forms import SignUpForm, UpdateUserForm, UpdatePasswordForm, UpdateCustomerForm
 # Create your views here.
 def index(request):
     products = Product.objects.all()
@@ -20,16 +20,23 @@ def login_user(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-        user = authenticate(request,username = username, password = password)
+        user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            messages.success(request, ("You have been logged in"))
+            # Check if the user has a corresponding Customer instance
+            try:
+                customer = user.customer  # This will raise an error if it doesn't exist
+            except Customer.DoesNotExist:
+                # Handle the case where the customer does not exist
+                messages.error(request, "Your account does not have a customer profile. Please contact support.")
+                return redirect('login')
+            messages.success(request, "You have been logged in")
             return redirect('index')
         else:
-            messages.success(request, ("There was an error, please try again"))
+            messages.error(request, "There was an error, please try again")
             return redirect('login')
         
-    return render(request,'login.html')
+    return render(request, 'login.html')
 
 def logout_user(request):
     logout(request)
@@ -70,21 +77,35 @@ def category(request, namee):
 @login_required
 def profile_page(request):
     user = request.user
-    return render(request, 'profile.html',{'user':user})
+    try:
+        customer = user.customer
+    except Customer.DoesNotExist:
+        customer = None
+    return render(request, 'profile.html',{'user':user, 'customer':customer})
 
 @login_required
 def edit_profile(request):
     user = request.user
     user_form = UpdateUserForm(request.POST or None, instance=user)
+    customer = get_object_or_404(Customer, user=user)
+    customer_form = UpdateCustomerForm(request.POST or None, instance=customer)
 
-    if user_form.is_valid():
+    if user_form.is_valid() and customer_form.is_valid():
         user_form.save()
+        customer_form.save()
 
-        login(request,user)
-        messages.success(request, "User Updated Successfully")
+        messages.success(request, "Profile Updated Successfully")
         return redirect('profile')
-    
-    return render(request,'updateprofile.html',{'user_form': user_form})
+    else:
+        if not user_form.is_valid():
+            print("User Form Errors:", user_form.errors)
+        if not customer_form.is_valid():
+            print("Customer Form Errors:", customer_form.errors)
+
+    return render(request, 'updateprofile.html', {
+        'user_form': user_form,
+        'customer_form': customer_form
+    })
 
 @login_required
 def update_password(request):

@@ -1,4 +1,5 @@
 from django import forms
+from .models import Customer
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, SetPasswordForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -94,4 +95,11 @@ class UpdatePasswordForm(SetPasswordForm):
         model= User
         fields = ('new_password1', 'new_password2')
 
-    
+class UpdateCustomerForm(forms.ModelForm):
+    class Meta:
+        model = Customer
+        fields = ['phone', 'address']
+        widgets = {
+            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your phone number'}),
+            'address': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Enter your address', 'rows': 3}),
+        }

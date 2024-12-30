@@ -31,6 +31,18 @@
                             <i class="fas fa-id-badge float-end"></i>
                         </li>
                         <li class="list-group-item">
+                            <strong>Email:</strong> {{ user.email }}
+                            <i class="fas fa-envelope float-end"></i>
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Phone:</strong> {{ customer.phone}}
+                            <i class="fas fa-phone float-end"></i>
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Address:</strong> {{ customer.address}}
+                            <i class="fas fa-map-marker-alt float-end"></i>
+                        </li>
+                        <li class="list-group-item">
                             <strong>Last Login:</strong> {{ user.last_login|date:"F j, Y, g:i a" }} 
                             <i class="fas fa-clock float-end"></i>
                         </li>
