@@ -5,7 +5,7 @@ class ShippingAddressForm(forms.ModelForm):
     class Meta:
         model = ShippingAddress
         fields = ['full_name', 'email', 'phone', 'address', 'city', 'state', 'zipcode', 'country']
-        exclude = ['user',]
+        
         widgets = {
             'full_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Full Name'}),
             'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
@@ -16,3 +16,4 @@ class ShippingAddressForm(forms.ModelForm):
             'zipcode': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Zip Code'}),
             'country': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Country'}),
         }
+        exclude = ['user',]
