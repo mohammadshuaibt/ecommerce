@@ -1,7 +1,9 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from .models import Order
+from ecommerce_app.models import Product
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from ecommerce_app.views import product_details
 
 # Create your views here.
 @login_required
