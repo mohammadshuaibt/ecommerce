@@ -37,6 +37,20 @@ class Customer(models.Model):
     def __str__(self):
         return self.user.username
 
+class ContactUs(models.Model):
+    name = models.CharField(max_length=255)
+    email = models.EmailField()
+    subject = models.CharField(max_length=255)
+    message = models.TextField()
+
+    def __str__(self):
+        return self.subject
+
+    class Meta:
+        verbose_name_plural = "Contact Us"
+
+
+
 # class Order(models.Model):
 #     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
 #     product = models.ForeignKey(Product, on_delete=models.CASCADE)

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Customer
+from .models import Customer,ContactUs
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, SetPasswordForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -103,3 +103,8 @@ class UpdateCustomerForm(forms.ModelForm):
             'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your phone number'}),
             'address': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Enter your address', 'rows': 3}),
         }
+
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = ContactUs
+        fields = ['name', 'email', 'subject', 'message']
