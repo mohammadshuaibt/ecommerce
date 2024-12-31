@@ -37,14 +37,14 @@ class Customer(models.Model):
     def __str__(self):
         return self.user.username
 
-class Order(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.IntegerField(default=1)
-    order_date = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=255)
+# class Order(models.Model):
+#     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+#     quantity = models.IntegerField(default=1)
+#     order_date = models.DateTimeField(auto_now_add=True)
+#     status = models.CharField(max_length=255)
 
-    def __str__(self):
-        return f"{self.customer.name} - {self.product.name}"
+#     def __str__(self):
+#         return f"{self.customer.name} - {self.product.name}"
     
 

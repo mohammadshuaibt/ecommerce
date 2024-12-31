@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="text-center mb-4">Order History</h2>
+    {% if orders %}
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Order Date</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td><a href="{% url 'product_details' order.product.id %}" class="text-black text-decoration-none">{{ order.product.name }}</a></td>
+                <td>{{ order.quantity }}</td>
+                <td>{{ order.order_date|date:"F j, Y, g:i a" }}</td>
+                <td>{{ order.status }}</td>
+                <td>
+                    {% if order.status == 'Pending' %}
+                    <a href="{% url 'cancel_order' order.id %}" class="btn btn-danger btn-sm">Cancel Order</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="alert alert-info text-center" role="alert">
+        You have no orders yet.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

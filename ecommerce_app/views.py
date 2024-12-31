@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect,get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from . models import Product, Category,Customer
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from cart.cart import Cart
 import json
 from .forms import SignUpForm, UpdateUserForm, UpdatePasswordForm, UpdateCustomerForm
+from payment.models import ShippingAddress
 # Create your views here.
 def index(request):
     products = Product.objects.all()
@@ -89,9 +90,10 @@ def profile_page(request):
     user = request.user
     try:
         customer = user.customer
+        shipping_address = ShippingAddress.objects.get(user = user)
     except Customer.DoesNotExist:
         customer = None
-    return render(request, 'profile.html',{'user':user, 'customer':customer})
+    return render(request, 'profile.html',{'user':user, 'customer':customer, 'shipping_address':shipping_address})
 
 @login_required
 def edit_profile(request):
