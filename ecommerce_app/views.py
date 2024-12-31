@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from cart.cart import Cart
 import json
-from .forms import SignUpForm, UpdateUserForm, UpdatePasswordForm, UpdateCustomerForm
+from .forms import SignUpForm, UpdateUserForm, UpdatePasswordForm, UpdateCustomerForm, ContactForm
 from payment.models import ShippingAddress
 # Create your views here.
 def index(request):
@@ -54,7 +54,16 @@ def logout_user(request):
 
 
 def ContactPage(request):
-    return render(request,'contact.html')
+    contactform = ContactForm()
+    if request.method == "POST":
+        contactform = ContactForm(request.POST)
+        if contactform.is_valid():
+            contactform.save()
+            messages.success(request, "Message Sent Successfully!")
+        else:
+            messages.error("There is a problem sending. Please Try Again")
+            redirect('contact')
+    return render(request,'contact.html',{'contactform': contactform})
 
 def AboutPage(request):
     return render(request,'about.html')
