@@ -1,5 +1,6 @@
 from django.conf import settings
 from ecommerce_app.models import Customer
+from payment.models import ShippingAddress
 import json
 
 class Cart:
@@ -29,6 +30,7 @@ class Cart:
             self.cart[product_id] = {'quantity': quantity, 'price': str(product.price), 'name': product.name, 'image': product.image.url}
         self.save()
         self.update_cart_items()
+        self.request.session['cart'] = self.cart
         # else: 
         #     print("no customer found")
 
@@ -39,6 +41,7 @@ class Cart:
             del self.cart[product_id]
             self.save()
             self.update_cart_items()
+            self.request.session.pop('cart', product_id)
 
     def update(self,product_id,quantity):
         '''Update the quantity of a product in Cart.'''
@@ -85,6 +88,14 @@ class Cart:
     def count(self):
         """Return the total number of unique items in the cart."""
         return len(self.cart)  # Count the number of unique product IDs in the cart
+    
+    # def load_cart_for_user(user):
+    #     if user.is_authenticated:
+    #         # Load the cart items from the database
+    #         shipping_address = ShippingAddress.objects.get(user=user)
+    #         cart_items = json.loads(shipping_address.cart_items)  # Assuming you store cart items as JSON
+    #         return cart_items
+    #     return {}
     
      
 
