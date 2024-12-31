@@ -50,6 +50,7 @@ def checkout(request):
         shipping_address = None
         return redirect('edit_shipping')
     
+        #integrate payment module
     if request.method == 'POST':
         for item in cart_items:
             product = get_object_or_404(Product, id = item['id'])
@@ -57,11 +58,13 @@ def checkout(request):
                 customer = request.user.customer,
                 product = product,
                 quantity = item['quantity'],
+                phone = shipping_address.phone,
+                address = shipping_address.address,
                 status = 'Pending'
             )
+            #add address and phone number to model and above
             cart.clear()
             messages.success(request, "Your Order has been placed Successfully!")
-        #integrate payment module
         return redirect('order_status')
     
     return render(request,'checkout.html',{
