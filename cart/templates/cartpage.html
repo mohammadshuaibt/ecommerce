@@ -42,7 +42,7 @@
     </table>
     <h4 class="text-right">Total: ₹{{ total_price }}</h4>
     <div class="text-right">
-        <a href="#" class="btn btn-success">Proceed to Checkout</a>
+        <a href="{% url 'checkout' %}" class="btn btn-success">Proceed to Checkout</a>
     </div>
     {% else %}
     <div class="alert alert-info text-center" role="alert">
