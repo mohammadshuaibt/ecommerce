@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect,get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from . models import Product, Category,Customer
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout

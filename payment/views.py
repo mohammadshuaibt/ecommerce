@@ -1,6 +1,8 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect, get_object_or_404
 from django.contrib import messages
 from cart.cart import Cart
+from ecommerce_app.models import Product
+from order.models import Order
 from django.contrib.auth.decorators import login_required
 from .forms import ShippingAddressForm
 from .models import ShippingAddress
@@ -49,8 +51,18 @@ def checkout(request):
         return redirect('edit_shipping')
     
     if request.method == 'POST':
+        for item in cart_items:
+            product = get_object_or_404(Product, id = item['id'])
+            order = Order.objects.create(
+                customer = request.user.customer,
+                product = product,
+                quantity = item['quantity'],
+                status = 'Pending'
+            )
+            cart.clear()
+            messages.success(request, "Your Order has been placed Successfully!")
         #integrate payment module
-        return redirect('payment_success')
+        return redirect('order_status')
     
     return render(request,'checkout.html',{
         'cart_items': cart_items,

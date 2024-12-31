@@ -97,8 +97,8 @@ class Cart:
     #         return cart_items
     #     return {}
     
-     
-
-
-
-    
+    def clear(self):
+        '''Clear the cart.'''
+        self.cart = {}
+        self.request.session['cart'] = self.cart
+        self.save()
