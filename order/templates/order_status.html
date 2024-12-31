@@ -11,15 +11,21 @@
                 <th>Quantity</th>
                 <th>Order Date</th>
                 <th>Status</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
             {% for order in orders %}
             <tr>
-                <td>{{ order.product.name }}</td>
+                <td><a href="{% url 'product_details' order.product.id %}" class="text-black text-decoration-none">{{ order.product.name }}</a></td>
                 <td>{{ order.quantity }}</td>
                 <td>{{ order.order_date|date:"F j, Y, g:i a" }}</td>
                 <td>{{ order.status }}</td>
+                <td>
+                    {% if order.status == 'Pending' %}
+                    <a href="{% url 'cancel_order' order.id %}" class="btn btn-danger btn-sm">Cancel Order</a>
+                    {% endif %}
+                </td>
             </tr>
             {% endfor %}
         </tbody>
