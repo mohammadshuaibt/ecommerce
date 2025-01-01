@@ -65,6 +65,12 @@ def ContactPage(request):
             redirect('contact')
     return render(request,'contact.html',{'contactform': contactform})
 
+def shippingPolicy(request):
+    return render(request,"shippingpolicy.html")
+
+def returnPolicy(request):
+    return render(request,"returnpolicy.html")
+
 def AboutPage(request):
     return render(request,'about.html')
 

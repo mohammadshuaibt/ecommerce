@@ -12,4 +12,6 @@ urlpatterns = [
     path('profile/',views.profile_page,name='profile'),
     path('editprofile/',views.edit_profile,name='edit_profile'),
     path('updatepassword/',views.update_password,name='update_password'),
+    path('shipping_policy/',views.shippingPolicy,name='shipping_policy'),
+    path('return_policy/',views.returnPolicy,name='return_policy'),
 ]
